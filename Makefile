@@ -2,7 +2,7 @@ CC = clang++
 CCFLAG = -Wall -Wextra -pipe
 CCDEBUG = -ggdb
 CCRELEASE = -O2
-CCSTD = -std=c++20
+CCSTD = -std=c++23
 CCASAN = -fsanitize=address,undefined
 
 pstree.out: pstree.cpp

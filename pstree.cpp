@@ -9,6 +9,7 @@
 #include <string>
 #include <unordered_map>
 #include <vector>
+#include <print>
 
 auto main(int argc, char* argv[]) -> int {
     for (int i = 0; i < argc; i ++) {
@@ -61,9 +62,11 @@ auto main(int argc, char* argv[]) -> int {
         pid_adj[parent_pid].emplace_back(pid);
     }
 
-    auto dump_print = [&](auto &self, std::uint64_t current_pid, std::string indent = "", bool is_last = true) -> void {
+    auto dump_print = [&](this auto &&self, std::uint64_t current_pid, std::string indent = "", bool is_last = true) -> void {
         const auto marker = is_last ? "└───" : "├───";
-        std::cout << std::format("{}{}{}({})\n", indent, marker, pid_name[current_pid], current_pid);
+        // std::cout << std::format("{}{}{}({})\n", indent, marker, pid_name[current_pid], current_pid);
+
+        std::println("{}{}{}({})", indent, marker, pid_name[current_pid], current_pid);
         
         if (!pid_adj.contains(current_pid)) {
             return;
@@ -72,10 +75,10 @@ auto main(int argc, char* argv[]) -> int {
         indent += is_last ? "    " : "│   ";
         const auto &next = pid_adj[current_pid];
         for (std::size_t i = 0; i < next.size(); i ++) {
-            self(self, next[i], indent, i + 1 == next.size());
+            self(next[i], indent, i + 1 == next.size());
         }
     };
 
     constexpr std::uint64_t init_pid = 1;
-    dump_print(dump_print, init_pid);
+    dump_print(init_pid);
 }
